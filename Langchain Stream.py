@@ -32,23 +32,21 @@ conversation = prompt | groq_chat
 
 def full_response(user_input):
     history.chat_memory.add_message(HumanMessage(content=user_input))
+    response = conversation.stream({"human_input": user_question, "chat_history": history.chat_memory.messages})
 
-    try:
-        complete_response = ''
-        print("Chatbot: ", end="", flush=True)
-        
-        response = conversation.stream({"human_input": user_question, "chat_history": history.chat_memory.messages})
-        for chunk in response:
-            content_value = chunk.content
-            complete_response += content_value
-            print(content_value, end="", flush=True)  
 
-        print("")
 
-    except KeyboardInterrupt:
-        response.close()
-        print("\n Interupted! ")
+    print("Chatbot: ", end="", flush=True) 
+
+    complete_response = ''
+    for chunk in response:
+        content_value = chunk.content
+        complete_response += content_value
+        print(content_value, end="", flush=True)  
     
+    print("")
+
+
     history.chat_memory.add_message(AIMessage(content=complete_response))
     return complete_response
 
