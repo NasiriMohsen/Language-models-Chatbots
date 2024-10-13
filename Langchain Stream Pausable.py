@@ -37,7 +37,7 @@ def full_response(user_input):
         complete_response = ''
         print("Chatbot: ", end="", flush=True)
         
-        response = conversation.stream({"human_input": user_question, "chat_history": history.chat_memory.messages})
+        response = conversation.stream({"human_input": user_input, "chat_history": history.chat_memory.messages})
         for chunk in response:
             content_value = chunk.content
             complete_response += content_value
